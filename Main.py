@@ -5,7 +5,7 @@ consultas = []
 procedimentos = []
 
 def adicionar_novo_paciente():
-    print("Adicionar Novo Paciente:")
+    print("-Adicionar Novo Paciente:")
     cpf = input("CPF: ")
     nome = input("Nome: ")
     idade = input("Idade: ")
@@ -54,7 +54,7 @@ def adicionar_novo_medico():
     print("Novo médico cadastrado com sucesso!")
 
 def pesquisar_paciente_por_cpf():
-    print("### Pesquisar Paciente por CPF ###")
+    print("-Pesquisar Paciente por CPF:")
     cpf = input("Digite o CPF do paciente: ")
 
     for paciente in pacientes:
@@ -64,7 +64,7 @@ def pesquisar_paciente_por_cpf():
     print("Paciente não encontrado.")
 
 def pesquisar_medico_por_crm():
-    print("### Pesquisar Médico por CRM ###")
+    print("-Pesquisar Médico por CRM:")
     crm = input("Digite o CRM do médico: ")
 
     for medico in medicos:
@@ -74,7 +74,7 @@ def pesquisar_medico_por_crm():
     print("Médico não encontrado.")
 
 def excluir_paciente_por_cpf():
-    print("### Excluir Paciente por CPF ###")
+    print("-Excluir Paciente por CPF:")
     cpf = input("Digite o CPF do paciente a ser excluído: ")
 
     for paciente in pacientes:
@@ -85,7 +85,7 @@ def excluir_paciente_por_cpf():
     print("Operação falhou: paciente não encontrado.")
 
 def excluir_medico_por_crm():
-    print("### Excluir Médico por CRM ###")
+    print("-Excluir Médico por CRM:")
     crm = input("Digite o CRM do médico a ser excluído: ")
 
     for medico in medicos:
@@ -96,7 +96,7 @@ def excluir_medico_por_crm():
     print("Operação falhou: médico não encontrado.")
 
 def agendar_consulta():
-    print("### Agendar Consulta ###")
+    print("-Agendar Consulta:")
     paciente_cpf = input("CPF do paciente: ")
     medico_crm = input("CRM do médico: ")
     data = input("Data da consulta: ")
@@ -128,7 +128,7 @@ def agendar_consulta():
     print("Consulta agendada com sucesso!")
 
 def registrar_procedimento_medico():
-    print("### Registrar Procedimento Médico ###")
+    print("Registrar Procedimento Médico")
     medico_crm = input("CRM do médico que realizou o procedimento: ")
     paciente_cpf = input("CPF do paciente que recebeu o procedimento: ")
     data = input("Data do procedimento: ")
@@ -160,7 +160,7 @@ def registrar_procedimento_medico():
 
 def main():
     while True:
-        print("\n### Sistema de Gerenciamento Médico ###")
+        print("\n----Sistema de Gerenciamento Médico----")
         print("1. Adicionar Novo Paciente")
         print("2. Adicionar Novo Médico")
         print("3. Pesquisar Paciente por CPF")
