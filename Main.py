@@ -5,7 +5,7 @@ consultas = []
 procedimentos = []
 
 def adicionar_novo_paciente():
-    print("### Adicionar Novo Paciente ###")
+    print("Adicionar Novo Paciente:")
     cpf = input("CPF: ")
     nome = input("Nome: ")
     idade = input("Idade: ")
