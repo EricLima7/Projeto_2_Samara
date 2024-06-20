@@ -84,16 +84,16 @@ def adicionar_novo_medico():
 #     })
 #     print("Novo médico cadastrado com sucesso!")
 #
-# def pesquisar_paciente_por_cpf():
-#     print("-Pesquisar Paciente por CPF:")
-#     cpf = input("Digite o CPF do paciente: ")
-#
-#     for paciente in pacientes:
-#         if paciente['cpf'] == cpf:
-#             print(f"CPF: {paciente['cpf']}, Nome: {paciente['nome']}, Idade: {paciente['idade']}, Endereço: {paciente['endereco']}, Telefone: {paciente['telefone']}")
-#             return
-#     print("Paciente não encontrado.")
-#
+def pesquisar_paciente_por_cpf():
+    print("-Pesquisar Paciente por CPF:")
+    cpf = input("Digite o CPF do paciente: ")
+
+    for paciente in pacientes:
+        if paciente['cpf'] == cpf:
+            print(f"CPF: {paciente['cpf']}, Nome: {paciente['nome']}, Idade: {paciente['idade']}, Endereço: {paciente['endereco']}, Telefone: {paciente['telefone']}")
+            return
+    print("Paciente não encontrado.")
+
 # def pesquisar_medico_por_crm():
 #     print("-Pesquisar Médico por CRM:")
 #     crm = input("Digite o CRM do médico: ")
