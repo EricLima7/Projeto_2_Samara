@@ -1,9 +1,25 @@
+import banco_dados
 
-pacientes = []
-medicos = []
-consultas = []
-procedimentos = []
+conexao = banco_dados.criarConexaoInicial("localhost", "root", "mine1029")
 
+banco_dados.criarBancoDados(conexao, "hospital")
+
+campos_paciente = [
+        "cpf VARCHAR(20) PRIMARY KEY",
+        "nome VARCHAR(100)",
+        "idade INT",
+        "endereco VARCHAR(50)",
+        "telefone VARCHAR(50)"
+    ]
+
+banco_dados.criarTabela(conexao, "pacientes", campos_paciente, "hospital")
+
+
+# pacientes = []
+# medicos = []
+# consultas = []
+# procedimentos = []
+#
 def adicionar_novo_paciente():
     print("-Adicionar Novo Paciente:")
     cpf = input("CPF: ")
@@ -16,148 +32,153 @@ def adicionar_novo_paciente():
         print("Por favor, preencha todos os campos obrigatórios.")
         return
 
-    for paciente in pacientes:
-        if paciente['cpf'] == cpf:
-            print("Operação falhou: paciente já cadastrado.")
-            return
+    sql_inserir_paciente = "INSERT INTO pacientes (cpf, nome, idade, endereco, telefone) VALUES (%s, %s, %s, %s, %s)"
+    dados_paciente = (cpf, nome, idade, endereco, telefone)
+    banco_dados.insertNoBancoDados(conexao, sql_inserir_paciente, dados_paciente )
+    # for paciente in pacientes:
+    #     if paciente['cpf'] == cpf:
+    #         print("Operação falhou: paciente já cadastrado.")
+    #         return
 
-    pacientes.append({
-        'cpf': cpf,
-        'nome': nome,
-        'idade': idade,
-        'endereco': endereco,
-        'telefone': telefone
-    })
+    # pacientes.append({
+    #     'cpf': cpf,
+    #     'nome': nome,
+    #     'idade': idade,
+    #     'endereco': endereco,
+    #     'telefone': telefone
+    # })
     print("Novo paciente cadastrado com sucesso!")
-def adicionar_novo_medico():
-    print("### Adicionar Novo Médico ###")
-    nome = input("Nome: ")
-    especialidade = input("Especialidade: ")
-    crm = input("CRM: ")
-    telefone = input("Telefone: ")
 
-    if not nome or not especialidade or not crm or not telefone:
-        print("Por favor, preencha todos os campos obrigatórios.")
-        return
 
-    for medico in medicos:
-        if medico['crm'] == crm:
-            print("Operação falhou: médico já cadastrado.")
-            return
-
-    medicos.append({
-        'nome': nome,
-        'especialidade': especialidade,
-        'crm': crm,
-        'telefone': telefone
-    })
-    print("Novo médico cadastrado com sucesso!")
-
-def pesquisar_paciente_por_cpf():
-    print("-Pesquisar Paciente por CPF:")
-    cpf = input("Digite o CPF do paciente: ")
-
-    for paciente in pacientes:
-        if paciente['cpf'] == cpf:
-            print(f"CPF: {paciente['cpf']}, Nome: {paciente['nome']}, Idade: {paciente['idade']}, Endereço: {paciente['endereco']}, Telefone: {paciente['telefone']}")
-            return
-    print("Paciente não encontrado.")
-
-def pesquisar_medico_por_crm():
-    print("-Pesquisar Médico por CRM:")
-    crm = input("Digite o CRM do médico: ")
-
-    for medico in medicos:
-        if medico['crm'] == crm:
-            print(f"Nome: {medico['nome']}, Especialidade: {medico['especialidade']}, CRM: {medico['crm']}, Telefone: {medico['telefone']}")
-            return
-    print("Médico não encontrado.")
-
-def excluir_paciente_por_cpf():
-    print("-Excluir Paciente por CPF:")
-    cpf = input("Digite o CPF do paciente a ser excluído: ")
-
-    for paciente in pacientes:
-        if paciente['cpf'] == cpf:
-            pacientes.remove(paciente)
-            print("Registro excluído com sucesso!")
-            return
-    print("Operação falhou: paciente não encontrado.")
-
-def excluir_medico_por_crm():
-    print("-Excluir Médico por CRM:")
-    crm = input("Digite o CRM do médico a ser excluído: ")
-
-    for medico in medicos:
-        if medico['crm'] == crm:
-            medicos.remove(medico)
-            print("Registro excluído com sucesso!")
-            return
-    print("Operação falhou: médico não encontrado.")
-
-def agendar_consulta():
-    print("-Agendar Consulta:")
-    paciente_cpf = input("CPF do paciente: ")
-    medico_crm = input("CRM do médico: ")
-    data = input("Data da consulta: ")
-    hora = input("Hora da consulta: ")
-
-    paciente_existente = False
-    medico_existente = False
-
-    for paciente in pacientes:
-        if paciente['cpf'] == paciente_cpf:
-            paciente_existente = True
-            break
-
-    for medico in medicos:
-        if medico['crm'] == medico_crm:
-            medico_existente = True
-            break
-
-    if not paciente_existente or not medico_existente:
-        print("Operação falhou: paciente ou médico não encontrado.")
-        return
-
-    consultas.append({
-        'paciente_cpf': paciente_cpf,
-        'medico_crm': medico_crm,
-        'data': data,
-        'hora': hora
-    })
-    print("Consulta agendada com sucesso!")
-
-def registrar_procedimento_medico():
-    print("Registrar Procedimento Médico")
-    medico_crm = input("CRM do médico que realizou o procedimento: ")
-    paciente_cpf = input("CPF do paciente que recebeu o procedimento: ")
-    data = input("Data do procedimento: ")
-    descricao = input("Descrição do procedimento realizado: ")
-    paciente_existente = False
-    medico_existente = False
-
-    for paciente in pacientes:
-        if paciente['cpf'] == paciente_cpf:
-            paciente_existente = True
-            break
-
-    for medico in medicos:
-        if medico['crm'] == medico_crm:
-            medico_existente = True
-            break
-
-    if not paciente_existente or not medico_existente:
-        print("Operação falhou: paciente ou médico não encontrado.")
-        return
-
-    procedimentos.append({
-        'medico_crm': medico_crm,
-        'paciente_cpf': paciente_cpf,
-        'data': data,
-        'descricao': descricao
-    })
-    print("Procedimento médico registrado com sucesso!")
-
+# def adicionar_novo_medico():
+#     print("### Adicionar Novo Médico ###")
+#     nome = input("Nome: ")
+#     especialidade = input("Especialidade: ")
+#     crm = input("CRM: ")
+#     telefone = input("Telefone: ")
+#
+#     if not nome or not especialidade or not crm or not telefone:
+#         print("Por favor, preencha todos os campos obrigatórios.")
+#         return
+#
+#     for medico in medicos:
+#         if medico['crm'] == crm:
+#             print("Operação falhou: médico já cadastrado.")
+#             return
+#
+#     medicos.append({
+#         'nome': nome,
+#         'especialidade': especialidade,
+#         'crm': crm,
+#         'telefone': telefone
+#     })
+#     print("Novo médico cadastrado com sucesso!")
+#
+# def pesquisar_paciente_por_cpf():
+#     print("-Pesquisar Paciente por CPF:")
+#     cpf = input("Digite o CPF do paciente: ")
+#
+#     for paciente in pacientes:
+#         if paciente['cpf'] == cpf:
+#             print(f"CPF: {paciente['cpf']}, Nome: {paciente['nome']}, Idade: {paciente['idade']}, Endereço: {paciente['endereco']}, Telefone: {paciente['telefone']}")
+#             return
+#     print("Paciente não encontrado.")
+#
+# def pesquisar_medico_por_crm():
+#     print("-Pesquisar Médico por CRM:")
+#     crm = input("Digite o CRM do médico: ")
+#
+#     for medico in medicos:
+#         if medico['crm'] == crm:
+#             print(f"Nome: {medico['nome']}, Especialidade: {medico['especialidade']}, CRM: {medico['crm']}, Telefone: {medico['telefone']}")
+#             return
+#     print("Médico não encontrado.")
+#
+# def excluir_paciente_por_cpf():
+#     print("-Excluir Paciente por CPF:")
+#     cpf = input("Digite o CPF do paciente a ser excluído: ")
+#
+#     for paciente in pacientes:
+#         if paciente['cpf'] == cpf:
+#             pacientes.remove(paciente)
+#             print("Registro excluído com sucesso!")
+#             return
+#     print("Operação falhou: paciente não encontrado.")
+#
+# def excluir_medico_por_crm():
+#     print("-Excluir Médico por CRM:")
+#     crm = input("Digite o CRM do médico a ser excluído: ")
+#
+#     for medico in medicos:
+#         if medico['crm'] == crm:
+#             medicos.remove(medico)
+#             print("Registro excluído com sucesso!")
+#             return
+#     print("Operação falhou: médico não encontrado.")
+#
+# def agendar_consulta():
+#     print("-Agendar Consulta:")
+#     paciente_cpf = input("CPF do paciente: ")
+#     medico_crm = input("CRM do médico: ")
+#     data = input("Data da consulta: ")
+#     hora = input("Hora da consulta: ")
+#
+#     paciente_existente = False
+#     medico_existente = False
+#
+#     for paciente in pacientes:
+#         if paciente['cpf'] == paciente_cpf:
+#             paciente_existente = True
+#             break
+#
+#     for medico in medicos:
+#         if medico['crm'] == medico_crm:
+#             medico_existente = True
+#             break
+#
+#     if not paciente_existente or not medico_existente:
+#         print("Operação falhou: paciente ou médico não encontrado.")
+#         return
+#
+#     consultas.append({
+#         'paciente_cpf': paciente_cpf,
+#         'medico_crm': medico_crm,
+#         'data': data,
+#         'hora': hora
+#     })
+#     print("Consulta agendada com sucesso!")
+#
+# def registrar_procedimento_medico():
+#     print("Registrar Procedimento Médico")
+#     medico_crm = input("CRM do médico que realizou o procedimento: ")
+#     paciente_cpf = input("CPF do paciente que recebeu o procedimento: ")
+#     data = input("Data do procedimento: ")
+#     descricao = input("Descrição do procedimento realizado: ")
+#     paciente_existente = False
+#     medico_existente = False
+#
+#     for paciente in pacientes:
+#         if paciente['cpf'] == paciente_cpf:
+#             paciente_existente = True
+#             break
+#
+#     for medico in medicos:
+#         if medico['crm'] == medico_crm:
+#             medico_existente = True
+#             break
+#
+#     if not paciente_existente or not medico_existente:
+#         print("Operação falhou: paciente ou médico não encontrado.")
+#         return
+#
+#     procedimentos.append({
+#         'medico_crm': medico_crm,
+#         'paciente_cpf': paciente_cpf,
+#         'data': data,
+#         'descricao': descricao
+#     })
+#     print("Procedimento médico registrado com sucesso!")
+#
 def main():
     while True:
         print("\n----Sistema de Gerenciamento Médico----")
@@ -175,25 +196,25 @@ def main():
 
         if opcao == '1':
             adicionar_novo_paciente()
-        elif opcao == '2':
-            adicionar_novo_medico()
-        elif opcao == '3':
-            pesquisar_paciente_por_cpf()
-        elif opcao == '4':
-            pesquisar_medico_por_crm()
-        elif opcao == '5':
-            excluir_paciente_por_cpf()
-        elif opcao == '6':
-            excluir_medico_por_crm()
-        elif opcao == '7':
-            agendar_consulta()
-        elif opcao == '8':
-            registrar_procedimento_medico()
-        elif opcao == '9':
-            print("Saindo do sistema...")
-            break
-        else:
-            print("Opção inválida. Por favor, escolha uma opção válida.")
-
+#         elif opcao == '2':
+#             adicionar_novo_medico()
+#         elif opcao == '3':
+#             pesquisar_paciente_por_cpf()
+#         elif opcao == '4':
+#             pesquisar_medico_por_crm()
+#         elif opcao == '5':
+#             excluir_paciente_por_cpf()
+#         elif opcao == '6':
+#             excluir_medico_por_crm()
+#         elif opcao == '7':
+#             agendar_consulta()
+#         elif opcao == '8':
+#             registrar_procedimento_medico()
+#         elif opcao == '9':
+#             print("Saindo do sistema...")
+#             break
+#         else:
+#             print("Opção inválida. Por favor, escolha uma opção válida.")
+#
 if __name__ == "__main__":
     main()
