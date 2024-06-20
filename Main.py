@@ -47,12 +47,12 @@ def adicionar_novo_paciente():
     #     'endereco': endereco,
     #     'telefone': telefone
     # })
-    print("Novo paciente cadastrado com sucesso!")
+    #print("Novo paciente cadastrado com sucesso!")
 ################################################################
 campos_medicos = [
-        "nome VARCHAR(100) Primary Key",
+        "nome VARCHAR(100) ",
         "especialidade VARCHAR(50) ",
-        "crm VARCHAR(50)",
+        "crm VARCHAR(50) Primary Key",
         "telefone VARCHAR(50)"
     ]
 
@@ -70,44 +70,58 @@ def adicionar_novo_medico():
     sql_inserir_medico = "INSERT INTO medicos (nome, especialidade, crm, telefone) VALUES (%s, %s, %s, %s)"
     dados_medico = (nome, especialidade, crm, telefone)
     banco_dados.insertNoBancoDados(conexao, sql_inserir_medico, dados_medico)
-#
+
 #     for medico in medicos:
 #         if medico['crm'] == crm:
 #             print("Operação falhou: médico já cadastrado.")
 #             return
 #
-#     medicos.append({
-#         'nome': nome,
-#         'especialidade': especialidade,
-#         'crm': crm,
-#         'telefone': telefone
-#     })
-#     print("Novo médico cadastrado com sucesso!")
-#
+    # medicos.append({
+    #     'nome': nome,
+    #     'especialidade': especialidade,
+    #     'crm': crm,
+    #     'telefone': telefone
+    # })
+    # print("Novo médico cadastrado com sucesso!")
+
 def pesquisar_paciente_por_cpf():
     print("-Pesquisar Paciente por CPF:")
     cpf = input("Digite o CPF do paciente: ")
+    sql_pesquisarPaciente = f"SELECT * FROM pacientes WHERE cpf = {cpf}"
+    pacientes = banco_dados.listarBancoDados(conexao, sql_pesquisarPaciente)
+    print(f"cpf: {pacientes[0][0]}")
+    print(f"nome: {pacientes[0][1]}")
+    print(f"idade: {pacientes[0][2]}")
+    print(f"endereco: {pacientes[0][3]}")
+    print(f"telefone: {pacientes[0][4]}")
+    # for paciente in pacientes:
+    #     if paciente['cpf'] == cpf:
+    #         print(f"CPF: {paciente['cpf']}, Nome: {paciente['nome']}, Idade: {paciente['idade']}, Endereço: {paciente['endereco']}, Telefone: {paciente['telefone']}")
+    #         return
+    # print("Paciente não encontrado.")
 
-    for paciente in pacientes:
-        if paciente['cpf'] == cpf:
-            print(f"CPF: {paciente['cpf']}, Nome: {paciente['nome']}, Idade: {paciente['idade']}, Endereço: {paciente['endereco']}, Telefone: {paciente['telefone']}")
-            return
-    print("Paciente não encontrado.")
+def pesquisar_medico_por_crm():
+    print("-Pesquisar Médico por CRM:")
+    crm = input("Digite o CRM do médico: ")
+    sql_pesquisarMedico = f"SELECT * FROM medicos WHERE crm = {crm}"
+    medicos = banco_dados.listarBancoDados(conexao, sql_pesquisarMedico)
+    print(f"nome: {medicos[0][0]}")
+    print(f"especialidade: {medicos[0][1]}")
+    print(f"crm: {medicos[0][2]}")
+    print(f"telefone: {medicos[0][3]}")
+    # for medico in medicos:
+    #     if medico['crm'] == crm:
+    #         print(f"Nome: {medico['nome']}, Especialidade: {medico['especialidade']}, CRM: {medico['crm']}, Telefone: {medico['telefone']}")
+    #         return
+    # print("Médico não encontrado.")
 
-# def pesquisar_medico_por_crm():
-#     print("-Pesquisar Médico por CRM:")
-#     crm = input("Digite o CRM do médico: ")
-#
-#     for medico in medicos:
-#         if medico['crm'] == crm:
-#             print(f"Nome: {medico['nome']}, Especialidade: {medico['especialidade']}, CRM: {medico['crm']}, Telefone: {medico['telefone']}")
-#             return
-#     print("Médico não encontrado.")
-#
-# def excluir_paciente_por_cpf():
-#     print("-Excluir Paciente por CPF:")
-#     cpf = input("Digite o CPF do paciente a ser excluído: ")
-#
+def excluir_paciente_por_cpf():
+    print("-Excluir Paciente por CPF:")
+    cpf = input("Digite o CPF do paciente a ser excluído: ")
+    sql_delete = "DELETE FROM pacientes WHERE cpf = %s"
+    dados_delete = (cpf,)
+    linhas_afetadas = banco_dados.excluirBancoDados(conexao, sql_delete, dados_delete)
+    print(f"{linhas_afetadas} linhas foram excluídas.")
 #     for paciente in pacientes:
 #         if paciente['cpf'] == cpf:
 #             pacientes.remove(paciente)
@@ -115,10 +129,13 @@ def pesquisar_paciente_por_cpf():
 #             return
 #     print("Operação falhou: paciente não encontrado.")
 #
-# def excluir_medico_por_crm():
-#     print("-Excluir Médico por CRM:")
-#     crm = input("Digite o CRM do médico a ser excluído: ")
-#
+def excluir_medico_por_crm():
+    print("-Excluir Médico por CRM:")
+    crm = input("Digite o CRM do médico a ser excluído: ")
+    sql_delete = "DELETE FROM medicos WHERE crm = %s"
+    dados_delete = (crm,)
+    linhas_afetadas = banco_dados.excluirBancoDados(conexao, sql_delete, dados_delete)
+    print(f"{linhas_afetadas} linhas foram excluídas.")
 #     for medico in medicos:
 #         if medico['crm'] == crm:
 #             medicos.remove(medico)
@@ -126,12 +143,23 @@ def pesquisar_paciente_por_cpf():
 #             return
 #     print("Operação falhou: médico não encontrado.")
 #
-# def agendar_consulta():
-#     print("-Agendar Consulta:")
-#     paciente_cpf = input("CPF do paciente: ")
-#     medico_crm = input("CRM do médico: ")
-#     data = input("Data da consulta: ")
-#     hora = input("Hora da consulta: ")
+campos_agendar_consulta = [
+        "id INT AUTO_INCREMENT PRIMARY KEY",
+        "paciente_cpf VARCHAR(20) ",
+        "medico_crm VARCHAR(100)",
+        "data INT",
+        "hora VARCHAR(50)",
+        "FOREIGN KEY (paciente_cpf) REFERENCES pacientes (cpf)",
+        "FOREIGN KEY (medico_crm) REFERENCES medicos (crm)",
+    ]
+
+banco_dados.criarTabela(conexao, "consultas", campos_agendar_consulta, "hospital")
+def agendar_consulta():
+    print("-Agendar Consulta:")
+    paciente_cpf = input("CPF do paciente: ")
+    medico_crm = input("CRM do médico: ")
+    data = input("Data da consulta: ")
+    hora = input("Hora da consulta: ")
 #
 #     paciente_existente = False
 #     medico_existente = False
@@ -158,15 +186,23 @@ def pesquisar_paciente_por_cpf():
 #     })
 #     print("Consulta agendada com sucesso!")
 #
-# def registrar_procedimento_medico():
-#     print("Registrar Procedimento Médico")
-#     medico_crm = input("CRM do médico que realizou o procedimento: ")
-#     paciente_cpf = input("CPF do paciente que recebeu o procedimento: ")
-#     data = input("Data do procedimento: ")
-#     descricao = input("Descrição do procedimento realizado: ")
-#     paciente_existente = False
-#     medico_existente = False
-#
+campos_registrar_procedimento_medico = [
+        "medico_crm VARCHAR(20) PRIMARY KEY",
+        "paciente_cpf VARCHAR(100)",
+        "data INT",
+        "hora VARCHAR(50)",
+    ]
+
+banco_dados.criarTabela(conexao, "consultas", campos_agendar_consulta, "hospital")
+def registrar_procedimento_medico():
+    print("Registrar Procedimento Médico")
+    medico_crm = input("CRM do médico que realizou o procedimento: ")
+    paciente_cpf = input("CPF do paciente que recebeu o procedimento: ")
+    data = input("Data do procedimento: ")
+    descricao = input("Descrição do procedimento realizado: ")
+    paciente_existente = False
+    medico_existente = False
+
 #     for paciente in pacientes:
 #         if paciente['cpf'] == paciente_cpf:
 #             paciente_existente = True
