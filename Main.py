@@ -48,18 +48,28 @@ def adicionar_novo_paciente():
     #     'telefone': telefone
     # })
     print("Novo paciente cadastrado com sucesso!")
+################################################################
+campos_medicos = [
+        "nome VARCHAR(100) Primary Key",
+        "especialidade VARCHAR(50) ",
+        "crm VARCHAR(50)",
+        "telefone VARCHAR(50)"
+    ]
 
+banco_dados.criarTabela(conexao, "medicos", campos_medicos, "hospital")
+def adicionar_novo_medico():
+    print("-Adicionar Novo Médico:")
+    nome = input("Nome: ")
+    especialidade = input("Especialidade: ")
+    crm = input("CRM: ")
+    telefone = input("Telefone: ")
 
-# def adicionar_novo_medico():
-#     print("### Adicionar Novo Médico ###")
-#     nome = input("Nome: ")
-#     especialidade = input("Especialidade: ")
-#     crm = input("CRM: ")
-#     telefone = input("Telefone: ")
-#
-#     if not nome or not especialidade or not crm or not telefone:
-#         print("Por favor, preencha todos os campos obrigatórios.")
-#         return
+    if not nome or not especialidade or not crm or not telefone:
+        print("Por favor, preencha todos os campos obrigatórios.")
+        return
+    sql_inserir_medico = "INSERT INTO medicos (nome, especialidade, crm, telefone) VALUES (%s, %s, %s, %s)"
+    dados_medico = (nome, especialidade, crm, telefone)
+    banco_dados.insertNoBancoDados(conexao, sql_inserir_medico, dados_medico)
 #
 #     for medico in medicos:
 #         if medico['crm'] == crm:
@@ -196,25 +206,25 @@ def main():
 
         if opcao == '1':
             adicionar_novo_paciente()
-#         elif opcao == '2':
-#             adicionar_novo_medico()
-#         elif opcao == '3':
-#             pesquisar_paciente_por_cpf()
-#         elif opcao == '4':
-#             pesquisar_medico_por_crm()
-#         elif opcao == '5':
-#             excluir_paciente_por_cpf()
-#         elif opcao == '6':
-#             excluir_medico_por_crm()
-#         elif opcao == '7':
-#             agendar_consulta()
-#         elif opcao == '8':
-#             registrar_procedimento_medico()
-#         elif opcao == '9':
-#             print("Saindo do sistema...")
-#             break
-#         else:
-#             print("Opção inválida. Por favor, escolha uma opção válida.")
-#
+        elif opcao == '2':
+             adicionar_novo_medico()
+        elif opcao == '3':
+             pesquisar_paciente_por_cpf()
+        elif opcao == '4':
+            pesquisar_medico_por_crm()
+        elif opcao == '5':
+            excluir_paciente_por_cpf()
+        elif opcao == '6':
+            excluir_medico_por_crm()
+        elif opcao == '7':
+            agendar_consulta()
+        elif opcao == '8':
+            registrar_procedimento_medico()
+        elif opcao == '9':
+            print("Saindo do sistema...")
+            break
+        else:
+             print("Opção inválida. Por favor, escolha uma opção válida.")
+
 if __name__ == "__main__":
     main()
