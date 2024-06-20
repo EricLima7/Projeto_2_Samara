@@ -1,10 +1,9 @@
-# Lista para armazenar dados simulados em memória
+
 pacientes = []
 medicos = []
 consultas = []
 procedimentos = []
 
-# Função para adicionar um novo paciente
 def adicionar_novo_paciente():
     print("### Adicionar Novo Paciente ###")
     cpf = input("CPF: ")
@@ -13,12 +12,10 @@ def adicionar_novo_paciente():
     endereco = input("Endereço: ")
     telefone = input("Telefone: ")
 
-    # Validar campos obrigatórios
     if not cpf or not nome or not idade or not endereco or not telefone:
         print("Por favor, preencha todos os campos obrigatórios.")
         return
 
-    # Verificar se paciente já está cadastrado
     for paciente in pacientes:
         if paciente['cpf'] == cpf:
             print("Operação falhou: paciente já cadastrado.")
@@ -32,8 +29,6 @@ def adicionar_novo_paciente():
         'telefone': telefone
     })
     print("Novo paciente cadastrado com sucesso!")
-
-# Função para adicionar um novo médico
 def adicionar_novo_medico():
     print("### Adicionar Novo Médico ###")
     nome = input("Nome: ")
@@ -41,12 +36,10 @@ def adicionar_novo_medico():
     crm = input("CRM: ")
     telefone = input("Telefone: ")
 
-    # Validar campos obrigatórios
     if not nome or not especialidade or not crm or not telefone:
         print("Por favor, preencha todos os campos obrigatórios.")
         return
 
-    # Verificar se médico já está cadastrado
     for medico in medicos:
         if medico['crm'] == crm:
             print("Operação falhou: médico já cadastrado.")
@@ -60,7 +53,6 @@ def adicionar_novo_medico():
     })
     print("Novo médico cadastrado com sucesso!")
 
-# Função para pesquisar paciente por CPF
 def pesquisar_paciente_por_cpf():
     print("### Pesquisar Paciente por CPF ###")
     cpf = input("Digite o CPF do paciente: ")
@@ -71,7 +63,6 @@ def pesquisar_paciente_por_cpf():
             return
     print("Paciente não encontrado.")
 
-# Função para pesquisar médico por CRM
 def pesquisar_medico_por_crm():
     print("### Pesquisar Médico por CRM ###")
     crm = input("Digite o CRM do médico: ")
@@ -82,7 +73,6 @@ def pesquisar_medico_por_crm():
             return
     print("Médico não encontrado.")
 
-# Função para excluir paciente pelo CPF
 def excluir_paciente_por_cpf():
     print("### Excluir Paciente por CPF ###")
     cpf = input("Digite o CPF do paciente a ser excluído: ")
@@ -94,7 +84,6 @@ def excluir_paciente_por_cpf():
             return
     print("Operação falhou: paciente não encontrado.")
 
-# Função para excluir médico pelo CRM
 def excluir_medico_por_crm():
     print("### Excluir Médico por CRM ###")
     crm = input("Digite o CRM do médico a ser excluído: ")
@@ -106,7 +95,6 @@ def excluir_medico_por_crm():
             return
     print("Operação falhou: médico não encontrado.")
 
-# Função para agendar consulta
 def agendar_consulta():
     print("### Agendar Consulta ###")
     paciente_cpf = input("CPF do paciente: ")
@@ -114,7 +102,6 @@ def agendar_consulta():
     data = input("Data da consulta: ")
     hora = input("Hora da consulta: ")
 
-    # Verificar se paciente e médico existem
     paciente_existente = False
     medico_existente = False
 
@@ -140,15 +127,12 @@ def agendar_consulta():
     })
     print("Consulta agendada com sucesso!")
 
-# Função para registrar procedimento médico
 def registrar_procedimento_medico():
     print("### Registrar Procedimento Médico ###")
     medico_crm = input("CRM do médico que realizou o procedimento: ")
     paciente_cpf = input("CPF do paciente que recebeu o procedimento: ")
     data = input("Data do procedimento: ")
     descricao = input("Descrição do procedimento realizado: ")
-
-    # Verificar se paciente e médico existem
     paciente_existente = False
     medico_existente = False
 
@@ -174,7 +158,6 @@ def registrar_procedimento_medico():
     })
     print("Procedimento médico registrado com sucesso!")
 
-# Função principal para mostrar o menu e executar operações
 def main():
     while True:
         print("\n### Sistema de Gerenciamento Médico ###")
