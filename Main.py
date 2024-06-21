@@ -142,7 +142,7 @@ def registrar_procedimento_medico():
 def excluir_procedimento():
     print("-Excluir procedimento médico:")
     crm = input("Digite o CRM do médico a ser excluído: ")
-    sql_delete = "DELETE FROM medicos WHERE crm = %s"
+    sql_delete = "DELETE FROM procedimentos WHERE crm = %s"
     dados_delete = (crm,)
     linhas_afetadas = banco_dados.excluirBancoDados(conexao, sql_delete, dados_delete)
     print(f"{linhas_afetadas} linhas foram excluídas.")
