@@ -92,10 +92,10 @@ campos_agendar_consulta = [
         "id INT AUTO_INCREMENT PRIMARY KEY",
         "paciente_cpf VARCHAR(20) ",
         "medico_crm VARCHAR(100)",
-        "data INT",
+        "data VARCHAR(1000) ",
         "hora VARCHAR(50)",
         "FOREIGN KEY (paciente_cpf) REFERENCES pacientes (cpf)",
-        "FOREIGN KEY (medico_crm) REFERENCES medicos (crm)",
+        "FOREIGN KEY (medico_crm) REFERENCES medicos (crm)"
     ]
 
 banco_dados.criarTabela(conexao, "consultas", campos_agendar_consulta, "hospital")
@@ -105,6 +105,10 @@ def agendar_consulta():
     medico_crm = input("CRM do médico: ")
     data = input("Data da consulta: ")
     hora = input("Hora da consulta: ")
+
+    sql_agendar_consulta = "INSERT INTO consultas (paciente_cpf, medico_crm, data, hora) VALUES (%s, %s, %s, %s)"
+    dados_consulta = (paciente_cpf, medico_crm, data, hora)
+    banco_dados.insertNoBancoDados(conexao, sql_agendar_consulta, dados_consulta)
 
 campos_registrar_procedimento_medico = [
         "id INT AUTO_INCREMENT PRIMARY KEY",
