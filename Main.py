@@ -110,6 +110,14 @@ def agendar_consulta():
     dados_consulta = (paciente_cpf, medico_crm, data, hora)
     banco_dados.insertNoBancoDados(conexao, sql_agendar_consulta, dados_consulta)
 
+def cancelar_consulta():
+    print("-Cancelar consulta:")
+    crm = input("Digite o CPf do cliente que deseja cancelar a consulta: ")
+    sql_delete = "DELETE FROM consultas WHERE cpf = %s"
+    dados_delete = (cpf)
+    linhas_afetadas = banco_dados.excluirBancoDados(conexao, sql_delete, dados_delete)
+    print(f"{linhas_afetadas} linhas foram excluídas.")
+
 campos_registrar_procedimento_medico = [
         "id INT AUTO_INCREMENT PRIMARY KEY",
         "medico_crm VARCHAR(20) ",
@@ -149,8 +157,10 @@ def main():
         print("5. Excluir Paciente pelo CPF")
         print("6. Excluir Médico pelo CRM")
         print("7. Agendar Consulta")
-        print("8. Registrar Procedimento Médico")
-        print("9. Sair do Sistema")
+        print("8. Cancelar Consulta")
+        print("9. Registrar Procedimento Médico")
+        print("10. Cancelar Procedimento Médico")
+        print("11. Sair do Sistema")
 
         opcao = input("Digite a opção desejada: ")
 
@@ -169,10 +179,12 @@ def main():
         elif opcao == '7':
             agendar_consulta()
         elif opcao == '8':
+            cancelar_consulta()
+        elif opcao == '9':
             registrar_procedimento_medico()
-        # elif opcao == '10':
-        # elif opcao == '11':
-        elif opcao == '12':
+        elif opcao == '10':
+            excluir_procedimento()
+        elif opcao == '11':
             print("Saindo do sistema...")
             break
         else:
