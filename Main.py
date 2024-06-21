@@ -14,12 +14,6 @@ campos_paciente = [
 
 banco_dados.criarTabela(conexao, "pacientes", campos_paciente, "hospital")
 
-
-# pacientes = []
-# medicos = []
-# consultas = []
-# procedimentos = []
-#
 def adicionar_novo_paciente():
     print("-Adicionar Novo Paciente:")
     cpf = input("CPF: ")
@@ -35,20 +29,7 @@ def adicionar_novo_paciente():
     sql_inserir_paciente = "INSERT INTO pacientes (cpf, nome, idade, endereco, telefone) VALUES (%s, %s, %s, %s, %s)"
     dados_paciente = (cpf, nome, idade, endereco, telefone)
     banco_dados.insertNoBancoDados(conexao, sql_inserir_paciente, dados_paciente )
-    # for paciente in pacientes:
-    #     if paciente['cpf'] == cpf:
-    #         print("Operação falhou: paciente já cadastrado.")
-    #         return
 
-    # pacientes.append({
-    #     'cpf': cpf,
-    #     'nome': nome,
-    #     'idade': idade,
-    #     'endereco': endereco,
-    #     'telefone': telefone
-    # })
-    #print("Novo paciente cadastrado com sucesso!")
-################################################################
 campos_medicos = [
         "nome VARCHAR(100) ",
         "especialidade VARCHAR(50) ",
@@ -71,19 +52,6 @@ def adicionar_novo_medico():
     dados_medico = (nome, especialidade, crm, telefone)
     banco_dados.insertNoBancoDados(conexao, sql_inserir_medico, dados_medico)
 
-#     for medico in medicos:
-#         if medico['crm'] == crm:
-#             print("Operação falhou: médico já cadastrado.")
-#             return
-#
-    # medicos.append({
-    #     'nome': nome,
-    #     'especialidade': especialidade,
-    #     'crm': crm,
-    #     'telefone': telefone
-    # })
-    # print("Novo médico cadastrado com sucesso!")
-
 def pesquisar_paciente_por_cpf():
     print("-Pesquisar Paciente por CPF:")
     cpf = input("Digite o CPF do paciente: ")
@@ -94,11 +62,6 @@ def pesquisar_paciente_por_cpf():
     print(f"idade: {pacientes[0][2]}")
     print(f"endereco: {pacientes[0][3]}")
     print(f"telefone: {pacientes[0][4]}")
-    # for paciente in pacientes:
-    #     if paciente['cpf'] == cpf:
-    #         print(f"CPF: {paciente['cpf']}, Nome: {paciente['nome']}, Idade: {paciente['idade']}, Endereço: {paciente['endereco']}, Telefone: {paciente['telefone']}")
-    #         return
-    # print("Paciente não encontrado.")
 
 def pesquisar_medico_por_crm():
     print("-Pesquisar Médico por CRM:")
@@ -109,11 +72,6 @@ def pesquisar_medico_por_crm():
     print(f"especialidade: {medicos[0][1]}")
     print(f"crm: {medicos[0][2]}")
     print(f"telefone: {medicos[0][3]}")
-    # for medico in medicos:
-    #     if medico['crm'] == crm:
-    #         print(f"Nome: {medico['nome']}, Especialidade: {medico['especialidade']}, CRM: {medico['crm']}, Telefone: {medico['telefone']}")
-    #         return
-    # print("Médico não encontrado.")
 
 def excluir_paciente_por_cpf():
     print("-Excluir Paciente por CPF:")
@@ -122,13 +80,6 @@ def excluir_paciente_por_cpf():
     dados_delete = (cpf,)
     linhas_afetadas = banco_dados.excluirBancoDados(conexao, sql_delete, dados_delete)
     print(f"{linhas_afetadas} linhas foram excluídas.")
-#     for paciente in pacientes:
-#         if paciente['cpf'] == cpf:
-#             pacientes.remove(paciente)
-#             print("Registro excluído com sucesso!")
-#             return
-#     print("Operação falhou: paciente não encontrado.")
-#
 def excluir_medico_por_crm():
     print("-Excluir Médico por CRM:")
     crm = input("Digite o CRM do médico a ser excluído: ")
@@ -136,13 +87,7 @@ def excluir_medico_por_crm():
     dados_delete = (crm,)
     linhas_afetadas = banco_dados.excluirBancoDados(conexao, sql_delete, dados_delete)
     print(f"{linhas_afetadas} linhas foram excluídas.")
-#     for medico in medicos:
-#         if medico['crm'] == crm:
-#             medicos.remove(medico)
-#             print("Registro excluído com sucesso!")
-#             return
-#     print("Operação falhou: médico não encontrado.")
-#
+
 campos_agendar_consulta = [
         "id INT AUTO_INCREMENT PRIMARY KEY",
         "paciente_cpf VARCHAR(20) ",
@@ -160,40 +105,19 @@ def agendar_consulta():
     medico_crm = input("CRM do médico: ")
     data = input("Data da consulta: ")
     hora = input("Hora da consulta: ")
-#
-#     paciente_existente = False
-#     medico_existente = False
-#
-#     for paciente in pacientes:
-#         if paciente['cpf'] == paciente_cpf:
-#             paciente_existente = True
-#             break
-#
-#     for medico in medicos:
-#         if medico['crm'] == medico_crm:
-#             medico_existente = True
-#             break
-#
-#     if not paciente_existente or not medico_existente:
-#         print("Operação falhou: paciente ou médico não encontrado.")
-#         return
-#
-#     consultas.append({
-#         'paciente_cpf': paciente_cpf,
-#         'medico_crm': medico_crm,
-#         'data': data,
-#         'hora': hora
-#     })
-#     print("Consulta agendada com sucesso!")
-#
+
 campos_registrar_procedimento_medico = [
-        "medico_crm VARCHAR(20) PRIMARY KEY",
+        "id INT AUTO_INCREMENT PRIMARY KEY",
+        "medico_crm VARCHAR(20) ",
         "paciente_cpf VARCHAR(100)",
         "data INT",
-        "hora VARCHAR(50)",
+        "descricao VARCHAR(50)",
+        "FOREIGN KEY (medico_crm) REFERENCES medicos (crm)",
+        "FOREIGN KEY (paciente_cpf) REFERENCES pacientes (cpf)",
+
     ]
 
-banco_dados.criarTabela(conexao, "consultas", campos_agendar_consulta, "hospital")
+banco_dados.criarTabela(conexao, "procedimentos", campos_registrar_procedimento_medico, "hospital")
 def registrar_procedimento_medico():
     print("Registrar Procedimento Médico")
     medico_crm = input("CRM do médico que realizou o procedimento: ")
@@ -203,28 +127,14 @@ def registrar_procedimento_medico():
     paciente_existente = False
     medico_existente = False
 
-#     for paciente in pacientes:
-#         if paciente['cpf'] == paciente_cpf:
-#             paciente_existente = True
-#             break
-#
-#     for medico in medicos:
-#         if medico['crm'] == medico_crm:
-#             medico_existente = True
-#             break
-#
-#     if not paciente_existente or not medico_existente:
-#         print("Operação falhou: paciente ou médico não encontrado.")
-#         return
-#
-#     procedimentos.append({
-#         'medico_crm': medico_crm,
-#         'paciente_cpf': paciente_cpf,
-#         'data': data,
-#         'descricao': descricao
-#     })
-#     print("Procedimento médico registrado com sucesso!")
-#
+def excluir_procedimento():
+    print("-Excluir procedimento médico:")
+    crm = input("Digite o CRM do médico a ser excluído: ")
+    sql_delete = "DELETE FROM medicos WHERE crm = %s"
+    dados_delete = (crm,)
+    linhas_afetadas = banco_dados.excluirBancoDados(conexao, sql_delete, dados_delete)
+    print(f"{linhas_afetadas} linhas foram excluídas.")
+
 def main():
     while True:
         print("\n----Sistema de Gerenciamento Médico----")
@@ -256,7 +166,9 @@ def main():
             agendar_consulta()
         elif opcao == '8':
             registrar_procedimento_medico()
-        elif opcao == '9':
+        # elif opcao == '10':
+        # elif opcao == '11':
+        elif opcao == '12':
             print("Saindo do sistema...")
             break
         else:
