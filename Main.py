@@ -32,7 +32,6 @@ campos_medicos = [
         "crm VARCHAR(50) Primary Key",
         "telefone VARCHAR(50)"
     ]
-
 banco_dados.criarTabela(conexao, "medicos", campos_medicos, "hospital")
 def adicionar_novo_medico():
     print("✚ Adicionar Novo Médico:")
@@ -40,7 +39,6 @@ def adicionar_novo_medico():
     especialidade = input("▶Especialidade: ")
     crm = input("▶CRM: ")
     telefone = input("▶Telefone: ")
-
     if not nome or not especialidade or not crm or not telefone:
         print("Por favor, preencha todos os campos obrigatórios.")
         return

@@ -57,4 +57,3 @@ def excluirBancoDados(connection, sql, dados):
     linhasAfetadas = cursor.rowcount
     cursor.close()
     return linhasAfetadas
-
