@@ -10,7 +10,6 @@ campos_paciente = [
         "endereco VARCHAR(50)",
         "telefone VARCHAR(50)"
     ]
-
 banco_dados.criarTabela(conexao, "pacientes", campos_paciente, "hospital")
 def adicionar_novo_paciente():
     print("✚ Adicionar Novo Paciente:")
